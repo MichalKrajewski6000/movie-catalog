@@ -3,7 +3,7 @@ import MainRoute from "../components/test/MainRoute.jsx";
 import SecondRoute from "../components/test/SecondRoute.jsx";
 const routes = [
     {
-        path: "/",
+        path: "main",
         element: <MainRoute />
     },
     {

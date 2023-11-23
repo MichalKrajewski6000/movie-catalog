@@ -10,7 +10,7 @@ const App = () => {
 
     const router = createBrowserRouter(routes);
 
-    return <RouterProvider router={router} />
+    return <AppLayout><RouterProvider router={router} /></AppLayout>
 }
 
 export default App;
