@@ -1,9 +1,12 @@
 {
   "name": "movie-catalog",
+  "displayName": "Movie Catalog",
   "version": "1.0.0",
   "main": "index.js",
   "repository": "https://github.com/MichalKrajewski6000/movie-catalog.git",
   "author": "Michał Krajewski",
+  "linkedIn": "https://www.linkedin.com/in/micha%C5%82-krajewski-855667209/",
+  "gitHub": "https://github.com/MichalKrajewski6000",
   "license": "MIT",
   "scripts": {
     "start": "webpack serve --mode development --open --live-reload",
@@ -13,6 +16,7 @@
     "antd": "^5.11.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.12.0",
     "react-router-dom": "^6.19.0"
   },
   "devDependencies": {
@@ -25,6 +29,7 @@
     "html-webpack-plugin": "^5.5.3",
     "sass": "^1.69.5",
     "sass-loader": "^13.3.2",
+    "style-loader": "^3.3.3",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
