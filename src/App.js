@@ -1,16 +1,44 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AppLayout from "./components/layout/AppLayout.jsx";
 import routes from "./utilities/RouteList.jsx";
 
-import { BrowserRouter as Router, Routes, Route, createBrowserRouter, RouterProvider } from "react-router-dom";
-import MainRoute from "./components/test/MainRoute.jsx";
-import SecondRoute from "./components/test/SecondRoute.jsx";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import "./App.css";
+import UserStore from "./utilities/UserStore.js";
+import Cookies from "js-cookie";
+import ProtectedRoute from "./utilities/ProtectedRoute.jsx";
+import { observer } from "mobx-react-lite";
 
 const App = () => {
+  const { currentUser } = UserStore;
 
-    const router = createBrowserRouter(routes);
+  useEffect(() => {
+    UserStore.loadData();
+  }, []);
 
-    return <AppLayout><RouterProvider router={router} /></AppLayout>
-}
+  return (
+    <AppLayout user={currentUser}>
+      <Router>
+        <Routes>
+          {routes.map((route) => {
+            if (route.private)
+              return (
+                <Route
+                  path={route.path}
+                  element={
+                    <ProtectedRoute user={Cookies.get("uid")}>
+                      {route.element}
+                    </ProtectedRoute>
+                  }
+                />
+              );
+            else return <Route path={route.path} element={route.element} />;
+          })}
+        </Routes>
+      </Router>
+    </AppLayout>
+  );
+};
 
-export default App;
+export default observer(App);
