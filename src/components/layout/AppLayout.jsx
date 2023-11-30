@@ -1,13 +1,14 @@
 import React from "react";
 import { Layout } from "antd";
 import AppFooter from "./AppFooter.jsx";
+import { observer } from "mobx-react-lite";
 
 const { Header, Content, Footer } = Layout;
 
-const AppLayout = ({ children }) => {
+const AppLayout = ({ user, children }) => {
   return (
     <Layout style={{ height: "100vh", margin: 0, padding: 0 }}>
-      <Header>Header</Header>
+      <Header style={{ color: "white " }}>{user?.name}</Header>
       <Content>{children}</Content>
       <Footer
         style={{
@@ -26,4 +27,4 @@ const AppLayout = ({ children }) => {
   );
 };
 
-export default AppLayout;
+export default observer(AppLayout);

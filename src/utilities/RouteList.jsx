@@ -1,7 +1,7 @@
 import React from "react";
 import MainRoute from "../components/test/MainRoute.jsx";
 import SecondRoute from "../components/test/SecondRoute.jsx";
-import { Navigate, Redire } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import LoginPage from "../components/auth/LoginPage.jsx";
 const routes = [
   {
