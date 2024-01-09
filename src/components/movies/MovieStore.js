@@ -1,6 +1,9 @@
 import { makeAutoObservable, toJS } from "mobx";
 
 import axios from "axios";
+import { doc, updateDoc, getDoc } from "firebase/firestore";
+import { firestore } from "../../utilities/Firebase";
+import Cookies from "js-cookie";
 
 class MovieStore {
   isLoading = true;
@@ -36,9 +39,18 @@ class MovieStore {
                 "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMWZlZjhkNDEwNmY0NDM5YTM5NDU3MThjZjU3Y2ZiOCIsInN1YiI6IjY1MzAxNTE5OTQ1ZDM2MDBlYjRkM2ViMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ._FwSliMjhFnoinOgqkXJF4RjJY75AHig3vqyEArdLco",
             },
           })
-          .then((snap) => {
+          .then(async (snap) => {
             this.allMovies = snap.data.results;
             this.movieCount = snap.data.total_results;
+
+            const firestoreRef = await getDoc(
+              doc(firestore, "movie-catalog", Cookies.get("uid"))
+            );
+
+            this.currentUserMovies = firestoreRef.data();
+
+            this.alreadyToWatch = this.currentUserMovies.toWatch;
+            this.alreadyWatched = this.currentUserMovies.alreadySeen;
 
             console.log("All Movies", toJS(this.allMovies));
             console.log("Movie Results", this.movieCount);
@@ -112,6 +124,39 @@ class MovieStore {
         console.log("Movie Results", this.movieCount);
         this.isLoading = false;
       });
+  }
+
+  addMovieToWatch(movie) {
+    let toWatchList = this.alreadyToWatch;
+
+    if (!toWatchList.includes(movie)) {
+      toWatchList.push(movie);
+
+      this.alreadyToWatch = toWatchList;
+
+      updateDoc(doc(firestore, "movie-catalog", Cookies.get("uid")), {
+        toWatch: toWatchList,
+      });
+    }
+  }
+
+  addMovieToWatched(movie) {
+    let watchedList = this.alreadyWatched;
+
+    if (!watchedList.includes(movie)) {
+      watchedList.push(movie);
+
+      const movieIndex = this.alreadyToWatch.indexOf(movie);
+      const newToWatch = this.alreadyToWatch.splice(movieIndex, 1);
+
+      this.alreadyToWatch = newToWatch;
+      this.alreadyWatched = watchedList;
+
+      updateDoc(doc(firestore, "movie-catalog", Cookies.get("uid")), {
+        toWatch: newToWatch,
+        alreadySeen: watchedList,
+      });
+    }
   }
 }
 

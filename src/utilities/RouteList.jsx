@@ -1,17 +1,17 @@
 import React from "react";
-import MainRoute from "../components/test/MainRoute.jsx";
-import SecondRoute from "../components/test/SecondRoute.jsx";
 import { Navigate } from "react-router-dom";
 import LoginPage from "../components/auth/LoginPage.jsx";
+import MovieList from "../components/movies/MovieList.jsx";
+import ToWatchList from "../components/movies/ToWatchList.jsx";
 const routes = [
   {
     path: "main",
-    element: <MainRoute />,
+    element: <MovieList />,
     private: true,
   },
   {
-    path: "second",
-    element: <SecondRoute />,
+    path: "to-watch",
+    element: <ToWatchList />,
     private: true,
   },
   {

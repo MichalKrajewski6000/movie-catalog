@@ -1,35 +1,55 @@
 import { Card } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 
 import MovieStore from "./MovieStore.js";
 import { observer } from "mobx-react-lite";
-import {
-  EditOutlined,
-  EllipsisOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
+
+import { CiBookmarkPlus, CiCircleCheck } from "react-icons/ci";
 
 const { Meta } = Card;
 
 const MovieCard = ({ movie }) => {
-  const { genres } = MovieStore;
+  const { genres, alreadyToWatch, alreadyWatched } = MovieStore;
+
+  // useEffect(() => {
+  //   console.log(
+  //     "Movie Store",
+  //     MovieStore.currentUserMovies.toWatch
+  //       .map((movie) => movie.id)
+  //       .includes(movie.id)
+  //   );
+  // }, []);
+
+  const toWatchList = MovieStore.currentUserMovies.toWatch.map(
+    (movie) => movie.id
+  );
+  const watchedList = MovieStore.currentUserMovies.alreadySeen.map(
+    (movie) => movie.id
+  );
 
   const currentGenres = genres
     .filter((genre) => movie.genre_ids.includes(genre.id))
     .map((genre) => genre.name);
 
-  const clickHandler = (e) => {
-    console.log("Click", movie.id);
+  const addToWatch = () => {
+    MovieStore.addMovieToWatch(movie);
+  };
+
+  const addToWatched = () => {
+    MovieStore.addMovieToWatched(movie);
   };
 
   return (
     <Card
       style={{
         border: "3px indigo solid",
-        backgroundColor: "#154D92",
+        backgroundColor: toWatchList.includes(movie.id)
+          ? "green"
+          : watchedList.includes(movie.id)
+          ? "gold"
+          : "cyan",
         width: 300,
       }}
-      onClick={clickHandler}
       hoverable
       cover={
         <img
@@ -38,9 +58,18 @@ const MovieCard = ({ movie }) => {
         />
       }
       actions={[
-        <SettingOutlined key="setting" />,
-        <EditOutlined key="edit" />,
-        <EllipsisOutlined key="ellipsis" />,
+        <CiBookmarkPlus
+          key="toWatch"
+          color={toWatchList.includes(movie.id) ? "gray" : "navy"}
+          size={24}
+          onClick={addToWatch}
+        />,
+        <CiCircleCheck
+          key="watched"
+          color={watchedList.includes(movie.id) ? "gray" : "navy"}
+          size={24}
+          onClick={addToWatched}
+        />,
       ]}
     >
       <Meta title={movie.title} description={currentGenres.join(", ")} />
