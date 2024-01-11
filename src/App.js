@@ -18,8 +18,8 @@ const App = () => {
   }, []);
 
   return (
-    <AppLayout user={currentUser}>
-      <Router>
+    <Router>
+      <AppLayout user={currentUser}>
         <Routes>
           {routes.map((route) => {
             if (route.private)
@@ -36,8 +36,8 @@ const App = () => {
             else return <Route path={route.path} element={route.element} />;
           })}
         </Routes>
-      </Router>
-    </AppLayout>
+      </AppLayout>
+    </Router>
   );
 };
 

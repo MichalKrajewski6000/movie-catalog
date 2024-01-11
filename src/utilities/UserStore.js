@@ -6,7 +6,6 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 
 class UserStore {
   currentUser = null;
-  currentFirestoreObj = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -27,14 +26,6 @@ class UserStore {
             toWatch: [],
             alreadySeen: [],
           });
-
-          this.currentFirestoreObj = {
-            UID: uid,
-            toWatch: [],
-            alreadySeen: [],
-          };
-        } else {
-          this.currentFirestoreObj = userMovies.data();
         }
       }
     });

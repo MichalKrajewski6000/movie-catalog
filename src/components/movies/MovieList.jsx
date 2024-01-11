@@ -3,7 +3,7 @@ import MovieStore from "./MovieStore";
 import MovieCard from "./MovieCard.jsx";
 
 import { observer } from "mobx-react-lite";
-import { Empty, Input, List, Pagination, Spin } from "antd";
+import { Empty, Input, List, Pagination, Spin, Tag } from "antd";
 
 const MovieList = () => {
   const { allMovies, isLoading, movieCount } = MovieStore;
@@ -65,8 +65,18 @@ const MovieList = () => {
       <Pagination
         current={currentPage}
         onChange={pageChangeHandler}
-        pageSize={20}
+        defaultPageSize={20}
+        pageSizeOptions={[20]}
         total={movieCount}
+        itemRender={(item, type, originalHtml) => {
+          if (type === "page")
+            return (
+              <Tag color="navy" style={{ color: "white" }}>
+                {item}
+              </Tag>
+            );
+          else return originalHtml;
+        }}
       />
     </>
   ) : (
